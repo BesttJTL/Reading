@@ -336,5 +336,7 @@
 // delete y[1]
 // console.log(y)
 // console.log(y.length)
-dasd
-sadsda
+// 
+function adasd(){
+  console.log(adasd('dasdass'))
+}
