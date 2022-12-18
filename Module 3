@@ -1,0 +1,67 @@
+const { template } = require('@babel/core')
+// import { getItemsOfCurrentPage, getTotalPages } from './lib/paginate.js'
+// import { products } from './data/products.js'
+const { getItemsOfCurrentPage, getTotalPages } = require('./lib/paginate.js')
+const products = require('./data/products.js')
+
+//your student id, firstname, and lastname here
+// 64130500007 Jatala Jarusirikul 
+function paginateManagement(items, rows) {
+  const rowsPerPage = rows
+  const products = items
+
+  const showItemsOfCurrentPage = (currentPageNumber) => {
+   let items = getItemsOfCurrentPage(products,currentPageNumber,rowsPerPage)
+   const findproduct = document.getElementById("products")
+   for(let i = 0; i < items.length ; i++){
+   const createLi = document.createElement("li")
+   createLi.textContent=`ID:${items[i].id}, NAME:${items[i].name}`
+   findproduct.appendChild(createLi)
+   }
+  }
+
+  const pageHandler = (event) => {
+    const clearpage = document.getElementById("products")
+    clearpage.textContent=''
+    const findpagination = document.querySelectorAll("button")
+    // console.log(findpagination)
+    findpagination.forEach(x => x.style = 'border: 1px solid #999')
+    if(event === undefined){
+      showItemsOfCurrentPage(1)
+      const firstsetting = document.querySelector("button")
+      firstsetting.style = 'background-color: LightSteelBlue'
+    }
+    else{
+      event.target.style ='background-color: LightSteelBlue'
+      let ids = event.target.id 
+      showItemsOfCurrentPage(ids)
+    }
+  }
+
+
+  const showPageNumbers = () => {
+    let page = getTotalPages(products, rowsPerPage)
+    const findpagination = document.getElementsByClassName("pagination")[0]
+    for(let i = 1; i <= page ; i++){
+    const createbutton = document.createElement("button")
+    createbutton.textContent= i 
+    createbutton.setAttribute("id",i)
+    createbutton.addEventListener("click",pageHandler)
+    findpagination.appendChild(createbutton)
+    }
+    // const findlastbutton = findpagination.lastElementChild
+    // findlastbutton.setAttribute("id","totalPage")
+  }
+
+  return {
+    showPageNumbers,
+    pageHandler
+  }
+}
+module.exports = paginateManagement
+// export { paginateManagement }
+// const { showPageNumbers,  pageHandler } =
+//   paginateManagement(products, 10)
+// showPageNumbers()
+// pageHandler()
+
